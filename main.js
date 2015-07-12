@@ -1,4 +1,4 @@
-var load_ok = false;				//読み込みが完了したか
+﻿var load_ok = false;				//読み込みが完了したか
 var map,maker;						//map関連変数
 var defaultPosition;				//初期位置
 var lat,lng;						//座標
@@ -13,7 +13,7 @@ var td_background_color = "#C4FD84";
 var yomiage_text_hairetu = [];
 var yomiage_count = 0;
 var transform = true;
-var worker_libmp3lame = new Worker('../js/encoder.js');
+var worker_libmp3lame = new Worker('./js/encoder.js');
 function load_(){
 	var style = document.createElement('div').style,
 	supported = 0;
@@ -31,11 +31,11 @@ function load_(){
 		wav_ok = false;
 	}
 	if(audio.canPlayType("audio/mp3") == "maybe" || audio.canPlayType("audio/mp3") == "probably" ){
-		opening_audio.src = "../audio/op_new.mp3";
-		drum_audio.src = "../audio/drum.mp3";
+		opening_audio.src = "./audio/op_new.mp3";
+		drum_audio.src = "./audio/drum.mp3";
 	}else{
-		opening_audio.src = "../audio/op_new.wav";
-		drum_audio.src = "../audio/drum.wav";
+		opening_audio.src = "./audio/op_new.wav";
+		drum_audio.src = "./audio/drum.wav";
 	}
 	drum_audio.preload = "auto";
 	opening_audio.preload = "auto";
@@ -45,7 +45,7 @@ function load_(){
 	if(lang == "en"){
 		document.getElementById("lang_select").innerHTML = "Language:";
 		document.getElementById("page_title").innerHTML = "Weather forecast";
-		document.getElementById("logo").src = "../img/LOGO_en.png";
+		document.getElementById("logo").src = "./img/LOGO_en.png";
 	}
 	//デフォルトの座標を設定
 	defaultPosition = new google.maps.LatLng(37,136);
@@ -191,7 +191,7 @@ function weather_get(lat,lon){
 			document.getElementById("d"+i+"-dt").innerHTML += disp_date;
 
 			//天気のアイコンのURLの取得
-			var weather_ico = "http://openweathermap.org/../img/w/" + data.list[i].weather[0].icon + ".png";
+			var weather_ico = "http://openweathermap.org/./img/w/" + data.list[i].weather[0].icon + ".png";
 			//天気のアイコンの反映
 			document.getElementById("d"+i+"-tenki_icon").src=weather_ico;
 			//天気の取得
@@ -412,17 +412,17 @@ function e_to_j(eng){
 function speed_src(speed){
 	//風の速度によって、表示矢印のリンクを変えるのでそのパスをリターン
 	if(speed < 3){
-		return "../img/01_.png";
+		return "./img/01_.png";
 	}else if(speed < 6){
-		return "../img/02_.png";
+		return "./img/02_.png";
 	}else if(speed < 9){
-		return "../img/03_.png";
+		return "./img/03_.png";
 	}else if(speed < 12){
-		return "../img/04_.png";
+		return "./img/04_.png";
 	}else if(speed < 15){
-		return "../img/05_.png";
+		return "./img/05_.png";
 	}else{
-		return "../img/ex.png";
+		return "./img/ex.png";
 	}
 }
 function yomiage_api(num){

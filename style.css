@@ -1,0 +1,97 @@
+body {
+	text-align: center;
+	background: radial-gradient(#499EFF, #395982);
+	color : white;
+}
+td {
+	text-align: center;
+	vertical-align: middle;
+}
+table {
+	margin-right: auto;
+	margin-left: auto;
+}
+.ico_sample {
+	width: 30px;
+	transform : rotate(-45deg);
+}
+#map {
+	border-radius : 20px;
+	width: 480px;
+	height: 480px;
+	margin-right: auto;
+	margin-left: auto;
+	margin-bottom : 4px;
+	margin-top : 4px;
+}
+.hiduke_td {
+	background-color: white;
+}
+.hiduke_td , .hiduke_title_td {
+	border-top-left-radius : 5px;
+	border-bottom-left-radius  : 5px;
+}
+.situdo_td , .situdo_title_td {
+	border-top-right-radius : 5px;
+	border-bottom-right-radius  : 5px;
+}
+#itiran {
+	background-color:#9FFF88;
+	border-radius : 10px;
+	padding : 0px;
+}
+#itiran td {
+	background-color:#C4FD84;
+}
+#ico_sample_table td , #lat_lng_table td {
+	background-color:#51B0FF;
+}
+#ico_sample_table , #lat_lng_table {
+	background-color:#93FCFF;
+}
+#itiran .saitei_kion ,#itiran .saitei_kion_title_td {
+	color:blue;
+	background-color: #A8FFFF;
+}
+#itiran .saikou_kion ,#itiran .saikou_kion_title_td {
+	color:red;
+	background-color: #FFA8F9;
+}
+.kaze_ico {
+	width: 30px;
+}
+.kaze_mozi {
+	font-size: 13px;
+}
+.tenki_mozi_td {
+	width: 40px;
+}
+.tenki_icon {
+	margin-top: -10px;
+	margin-bottom: -10px;
+	overflow:hidden;
+}
+#logo {
+	margin-bottom: 8px;
+}
+#ico_sample_table , #lat_lng_table , #itiran , .tenki_td table {
+	color : black;
+}
+a {
+	color : white;
+	margin-right: 5px;
+	margin-left: 5px;
+}
+#logo {
+	/*background-color : white;*/
+	background: linear-gradient(#CEEEFF, #499EFF);
+	padding: 1px;
+	border-radius : 7px;
+}
+.main_td{
+	padding-left : 5px;
+	padding-right : 5px;
+}
+#main_table #tenki #itiran .hiduke_td:hover {
+	background-color:#3EFF33 !important;
+}
