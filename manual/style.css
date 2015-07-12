@@ -1,0 +1,43 @@
+body {
+	text-align: center;
+	background: radial-gradient(#499EFF, #395982);
+	color : white;
+}
+td {
+	text-align: center;
+	vertical-align: middle;
+}
+img {
+	/*transform: rotate(45deg);*/
+}
+#map {
+	margin: auto;
+	width: 480px;
+	height: 480px;
+}
+#syutoku {
+	font-size : 20px;
+	width: 180px;
+	height: 30px;
+	margin-bottom: 5px;
+	margin-top: 5px;
+	background-color: #FEC52C;
+}
+table{
+	margin:auto;
+}
+td {
+	text-align: center;
+	vertical-align: middle;
+}
+#favo_message {
+	color: #FFD7C5;
+	text-shadow:
+		-1px -1px #E0207A,
+		1px -1px #E0207A,
+		-1px 1px #E0207A,
+		1px 1px #E0207A;
+}
+.favo_button {
+	/*background-color: #FFD7C5;*/
+}

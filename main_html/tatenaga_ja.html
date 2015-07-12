@@ -1,0 +1,33 @@
+﻿		都市名：<span id="toshi"></span>・リンク：<span id="link"></span>
+		<table>
+			<tr>
+				<td>
+					<table border="1" id="ico_sample_table">
+						<tr>
+							<td><img src="../img/01_.png" class="ico_sample"></td>
+							<td><img src="../img/02_.png" class="ico_sample"></td>
+							<td><img src="../img/03_.png" class="ico_sample"></td>
+							<td><img src="../img/04_.png" class="ico_sample"></td>
+							<td><img src="../img/05_.png" class="ico_sample"></td>
+							<td><img src="../img/ex.png" class="ico_sample"></td>
+						</tr><tr>
+							<td>～3m/s</td>
+							<td>～6m/s</td>
+							<td>～9m/s</td>
+							<td>～12m/s</td>
+							<td>～15m/s</td>
+							<td>その他強風</td>
+						</tr>
+					</table>
+				</td><td>
+					<table border="1" id="lat_lng_table">
+						<tr><td>LAT</td><td><span id="lat"></span></td></tr>
+						<tr><td>LNG</td><td><span id="lng"></span></td></tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+		<div id="tenki"></div>
+		<button type="button" onclick="jump_to_manually_setting()" id="zahyou_syudou">座標手動設定</button>
+		<button type="button" onclick="page_jump('./?lang=ja')" id="zahyou_zidou">座標自動設定</button>
+		<div id="map"></div>

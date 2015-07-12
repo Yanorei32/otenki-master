@@ -1,0 +1,40 @@
+﻿		<table id="main_table">
+			<tr>
+				<td class="main_td">
+					<table>
+						<tr>
+							<td>
+								<table border="1" id="ico_sample_table">
+									<tr>
+										<td><img src="../img/01_.png" class="ico_sample"></td>
+										<td><img src="../img/02_.png" class="ico_sample"></td>
+										<td><img src="../img/03_.png" class="ico_sample"></td>
+										<td><img src="../img/04_.png" class="ico_sample"></td>
+										<td><img src="../img/05_.png" class="ico_sample"></td>
+										<td><img src="../img/ex.png" class="ico_sample"></td>
+									</tr><tr>
+										<td>~3m/s</td>
+										<td>~6m/s</td>
+										<td>~9m/s</td>
+										<td>~12m/s</td>
+										<td>~15m/s</td>
+										<td>Strong&nbsp;wind</td>
+									</tr>
+								</table>
+							</td><td>
+								<table border="1" id="lat_lng_table">
+									<tr><td>LAT</td><td><span id="lat"></span></td></tr>
+									<tr><td>LNG</td><td><span id="lng"></span></td></tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+					<div id="tenki"></div>
+				</td><td class="main_td">
+					<button type="button" onclick="jump_to_manually_setting()" id="zahyou_syudou">Coordinate Manual setting</button>
+					<button type="button" onclick="page_jump('./?lang=en')" id="zahyou_zidou">Coordinate Automatic setting</button>
+					<div id="map"></div>
+					City:<span id="toshi"></span>/Link:<span id="link"></span><br>
+				</td>
+			</tr>
+		</table>
