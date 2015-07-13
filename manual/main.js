@@ -2,6 +2,10 @@ var map,maker;			//map関連変数
 var defaultPosition;	//初期位置
 var lang;
 var preset = [["東京",35.680865,139.767036,13]];
+var geocoder;
+var map2 = new GMap2(document.getElementById("map2"));
+map2.setCenter(new GLatLng(35.172304,136.908306), 15);
+var geocoder = new GClientGeocoder();
 function load(){
 	defaultPosition = new google.maps.LatLng(37,136);	
 	
@@ -159,5 +163,22 @@ function preset_delete(){
 function preset_init(){
 	if(confirm("本当に全ての設定を削除しますか？")){
 		localStorage.removeItem("preset");
+	}
+}
+function addresssearch_address(){
+	var address = document.getElementById("addresssearch_address").value;
+	if(address == "") alert("住所を入力してください");
+	var lat_lng = new XMLHttpRequest();
+	lat_lng.open("get","./geocoding.php?q="+encodeURI(address));
+	lat_lng.send(null);
+	lat_lng.onload = function(){
+		if(this.responseText != "error"){
+			var lat_lng_data = this.responseText.split(",");
+			var lat = lat_lng_data[0];
+			var lng = lat_lng_data[1];
+			topreset(lat,lng,map.getZoom())
+		}else{
+			alert("エラー発生");
+		}
 	}
 }

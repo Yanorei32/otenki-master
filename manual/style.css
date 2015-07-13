@@ -41,3 +41,12 @@ td {
 .favo_button {
 	/*background-color: #FFD7C5;*/
 }
+#logo {
+	margin-bottom: 8px;
+	background: linear-gradient(#CEEEFF, #499EFF);
+	padding: 1px;
+	border-radius : 7px;
+}
+#lang {
+	margin-bottom: 8px;
+}
