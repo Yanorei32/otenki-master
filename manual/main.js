@@ -31,13 +31,7 @@ function load(){
 	}
 }
 function map_make(){
-	var latlng = new google.maps.LatLng(38,139);
-	var opts = {
-		zoom: 5,
-    	center: latlng,
-		mapTypeId: google.maps.MapTypeId.ROADMAP
-	};
-	map = new google.maps.Map(document.getElementById("map"), opts);
+	map_latlng_set_make(38,139,5);
 }
 function map_latlng_set_make(lat,lng,zoom){
 	var latlng = new google.maps.LatLng(lat,lng);
@@ -52,7 +46,6 @@ function map_latlng_get(){
 	var center = map.getCenter();
 	var lat = center.lat();
 	var lng = center.lng();
-	alert(lat+"\r\n"+lng)
 	var zoom = map.getZoom();
 	location.href = "../index.php?lat="+lat+"&lng="+lng+"&lang="+lang+"&zoom="+zoom;
 }
@@ -139,18 +132,65 @@ function preset_init(){
 }
 function addresssearch_address(){
 	var address = document.getElementById("addresssearch_address").value;
+	address = address.replace(" ","+");
 	if(address == "") alert("住所を入力してください");
-	var lat_lng = new XMLHttpRequest();
-	lat_lng.open("get","./geocoding.php?q="+encodeURI(address));
-	lat_lng.send(null);
-	lat_lng.onload = function(){
-		if(this.responseText != "error"){
-			var lat_lng_data = this.responseText.split(",");
-			var lat = lat_lng_data[0];
-			var lng = lat_lng_data[1];
-			topreset(lat,lng,map.getZoom())
-		}else{
-			alert("エラー発生");
+	var geocoder = new google.maps.Geocoder();
+	geocoder.geocode(
+		{
+			'address': address,
+			'language': 'ja'
+		},
+		function(results, status){
+			if(status==google.maps.GeocoderStatus.OK){
+				var zoom = map.getZoom();
+				var bounds = new google.maps.LatLngBounds();
+				var marker = [];
+				for (var i in results) {
+					if (results[i].geometry) {
+						// 緯度経度を取得
+						var latlng = results[i].geometry.location;
+						// 住所を取得(日本の場合だけ「日本, 」を削除)
+						var address = results[i].formatted_address.replace(/^日本, /, '');
+						// 検索結果地が含まれるように範囲を拡大
+						bounds.extend(latlng);
+						// あとはご自由に・・・。
+						/*new google.maps.InfoWindow({
+							content: address + "<br>(Lat, Lng) = " + latlng.toString()
+						}).open(map, new google.maps.Marker({
+							position: latlng,
+							map: map
+						}));*/
+						marker.push(latlng);
+						new google.maps.Marker({
+							position: latlng,
+							map: map
+						});
+					}
+				}
+				// 範囲を移動
+				map.fitBounds(bounds);
+				var center = map.getCenter();
+				var lat = center.lat();
+				var lng = center.lng();
+				var new_zoom = map.getZoom();
+				if(new_zoom < zoom){
+					zoom = new_zoom;
+				}
+				var latlng = new google.maps.LatLng(lat,lng);
+				var opts = {
+					zoom: zoom,
+					center: latlng,
+					mapTypeId: google.maps.MapTypeId.ROADMAP
+				};
+				map = new google.maps.Map(document.getElementById("map"), opts);
+				for(var i = 0;marker.length > i;i++){
+					new google.maps.Marker({
+						position: marker[i],
+						map: map
+					});
+				}
+				if(marker.length == 0) alert("場所が見つけられませんでした");
+			}
 		}
-	}
+	);
 }
