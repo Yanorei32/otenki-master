@@ -21,6 +21,8 @@ function load(){
 		document.getElementById("preset_delete").value = "delete";
 		document.getElementById("preset_plus").value = "add";
 		document.getElementById("preset_name").placeholder = "Favorites";
+		document.getElementById("addresssearch_address").placeholder = "Address";
+		document.getElementById("addresssearch_button").value="move";
 		document.getElementById("favo_message").innerHTML = "Favorites";
 	}
 	if(localStorage.preset == undefined){
