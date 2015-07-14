@@ -138,7 +138,7 @@ function addresssearch_address(){
 	geocoder.geocode(
 		{
 			'address': address,
-			'language': 'ja'
+			'language': lang
 		},
 		function(results, status){
 			if(status==google.maps.GeocoderStatus.OK){
