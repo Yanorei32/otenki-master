@@ -2,10 +2,6 @@ var map,maker;			//map関連変数
 var defaultPosition;	//初期位置
 var lang;
 var preset = [["東京",35.680865,139.767036,13]];
-var geocoder;
-var map2 = new GMap2(document.getElementById("map2"));
-map2.setCenter(new GLatLng(35.172304,136.908306), 15);
-var geocoder = new GClientGeocoder();
 function load(){
 	defaultPosition = new google.maps.LatLng(37,136);	
 	
@@ -53,20 +49,10 @@ function map_latlng_set_make(lat,lng,zoom){
 	map = new google.maps.Map(document.getElementById("map"), opts);
 }
 function map_latlng_get(){
-	var latlngBounds = map.getBounds();
-	var swLatlng = latlngBounds.getSouthWest();
-	var swlat = swLatlng.lat();
-	var swlng = swLatlng.lng();
-
-	var neLatlng = latlngBounds.getNorthEast();
-	var nelat = neLatlng.lat();
-	var nelng = neLatlng.lng();
-
-	var lat = swlat - (( swlat - nelat ) / 2);
-	var lng = swlng - (( swlng - nelng ) / 2);
-
-	//alert((swlat - nelat) + "\n" + (swlng - nelng));
-	//alert(lat + "\n" + lng);
+	var center = map.getCenter();
+	var lat = center.lat();
+	var lng = center.lng();
+	alert(lat+"\r\n"+lng)
 	var zoom = map.getZoom();
 	location.href = "../index.php?lat="+lat+"&lng="+lng+"&lang="+lang+"&zoom="+zoom;
 }
@@ -95,17 +81,9 @@ function GetQueryString(){
 	return result;
 }
 function lang_chg(){
-	var latlngBounds = map.getBounds();
-	var swLatlng = latlngBounds.getSouthWest();
-	var swlat = swLatlng.lat();
-	var swlng = swLatlng.lng();
-
-	var neLatlng = latlngBounds.getNorthEast();
-	var nelat = neLatlng.lat();
-	var nelng = neLatlng.lng();
-
-	var lat = swlat - (( swlat - nelat ) / 2);
-	var lng = swlng - (( swlng - nelng ) / 2);
+	var center = map.getCenter();
+	var lat = center.lat();
+	var lng = center.lng();
 	var zoom = map.getZoom();
 
 	document.location = "./?lang="+document.getElementById("lang").value+"&lat="+lat+"&lng="+lng+"&zoom="+zoom;
@@ -122,15 +100,9 @@ function preset_cont(){
 	topreset(preset[num][1],preset[num][2],preset[num][3]);
 }
 function preset_plus(){
-	var latlngBounds = map.getBounds();
-	var swLatlng = latlngBounds.getSouthWest();
-	var swlat = swLatlng.lat();
-	var swlng = swLatlng.lng();
-	var neLatlng = latlngBounds.getNorthEast();
-	var nelat = neLatlng.lat();
-	var nelng = neLatlng.lng();
-	var lat = swlat - (( swlat - nelat ) / 2);
-	var lng = swlng - (( swlng - nelng ) / 2);
+	var center = map.getCenter();
+	var lat = center.lat();
+	var lng = center.lng();
 	var zoom = map.getZoom();
 	var name = document.getElementById("preset_name").value;
 	if(name == ""){
