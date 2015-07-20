@@ -1,35 +1,48 @@
-var load_ok = false;				//読み込みが完了したか
-var map,maker;						//map関連変数
-var defaultPosition;				//初期位置
-var lat,lng;						//座標
-var audio = new Audio();			//Audio用変数
-var opening_audio = new Audio();	//OP用変数
-var drum_audio = new Audio();		//Drum用変数
-var yomiage_flag = false;			//読み上げ中か
-var lang;							//言語の設定
-var zahyou_manual = false;			//座標がマニュアル設定によるものか。
-var wav_ok = true;					//BrowserがIEか
-var td_background_color = "#C4FD84";
-var yomiage_text_hairetu = [];
-var yomiage_count = 0;
+//読み込みが完了したか
+var load_ok = false;
+//言語
+var lang;
+//地図表示関連
+var map,maker,defaultPosition;
+//座標
+var lat,lng;
+//座標が手動設定によるものか
+var zahyou_manual = false;
+//読み上げ中か
+var yomiage_flag = false;
+//WAVが再生可能か
+var wav_ok = true;
+//ブラウザが回転に対応しているか
 var transform = true;
+//TDの背景色
+var td_background_color = "#C4FD84";
+//声用,OP用,ドラム用Audio
+var audio = new Audio();
+var opening_audio = new Audio();
+var drum_audio = new Audio();
+//読み上げのテキストの配列
+var yomiage_text_hairetu = [];
+//読み上げた回数
+var yomiage_count = 0;
+//エンコーダーのワーカー
 var worker_libmp3lame = new Worker('./js/encoder.js');
 function load_(){
+	//ブラウザが回転に対応しているかの判定&対応していなかった場合の対応
 	var style = document.createElement('div').style,
 	supported = 0;
 	if( 'transform' in style ) {
 		style.transform = 'rotateY(100deg)';
 		supported = style.transform === '' ? 1 : 2;
 	}
-	var userAgent = window.navigator.userAgent.toLowerCase();
-	console.log(userAgent);
 	//言語の設定
 	lang = lang_get_syori();
+	//WAVEファイル(読み上げのファイル)の再生に対応しているか&対応していなかった場合の対応
 	if(audio.canPlayType("audio/wav") != "maybe" && audio.canPlayType("audio/wav") != "probably"){
-		if(lang == "ja") alert("警告：このブラウザの場合、十分なパフォーマンスを発揮できない可能性があります。")
-		if(lang == "en") alert("Warning : In the case of this browser , there is a possibility that you can not exert sufficient performance.")
+		if(lang == "ja") alert("警告：このブラウザの場合、十分なパフォーマンスを発揮できない可能性があります。");
+		if(lang == "en") alert("Warning : In the case of this browser , there is a possibility that you can not exert sufficient performance.");
 		wav_ok = false;
 	}
+	//mp3が対応しているか&対応していなかった場合WAVに
 	if(audio.canPlayType("audio/mp3") == "maybe" || audio.canPlayType("audio/mp3") == "probably" ){
 		opening_audio.src = "./audio/op_new.mp3";
 		drum_audio.src = "./audio/drum.mp3";
@@ -37,11 +50,15 @@ function load_(){
 		opening_audio.src = "./audio/op_new.wav";
 		drum_audio.src = "./audio/drum.wav";
 	}
+	//音声の設定
 	drum_audio.preload = "auto";
+	drum_audio.volume = 0.5;
 	opening_audio.preload = "auto";
+	opening_audio.volume = 0.6;
+	audio.volume = 1;
 	//Selectの初期化
 	document.getElementById("lang").value = lang;
-	//日本語のページ設定
+	//英語のページ設定
 	if(lang == "en"){
 		document.getElementById("lang_select").innerHTML = "Language:";
 		document.getElementById("page_title").innerHTML = "Weather forecast";
@@ -49,8 +66,6 @@ function load_(){
 	}
 	//デフォルトの座標を設定
 	defaultPosition = new google.maps.LatLng(37,136);
-	//読み上げ用変数の一括初期化
-	yomiage_text = yomiage_text_d0 = yomiage_text_d1 = yomiage_text_d2 = yomiage_text_d3 = yomiage_text_d4 = yomiage_text_d5 = yomiage_text_d6 = yomiage_text_d7 = "";
 	//HTMLの取得の準備
 	var html = new XMLHttpRequest();
 	//Windowサイズの比較
@@ -66,11 +81,11 @@ function load_(){
 	html.onload = function(){
 		//読み込んだHTMLを表示
 		document.getElementById("main").innerHTML = this.responseText;
-		if(supported == 2){
-			transform = true;
-		}else{
+		if(supported == 0){
 			transform = false;
-			document.getElementById("ico_sample_table").style.display = "none";
+			alert("TRANSFORMにこのブラウザが対応していないため風向きの表示がおかしくなります");
+		}else{
+			transform = true;
 		}
 		//URLからの座標取得ができなかった
 		if(get_syori() == "error"){
@@ -344,8 +359,6 @@ function num_to_week(num){
 		week_char = ["日","月","火","水","木","金","土"];
 	}else if(lang == "en"){
 		week_char = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
-	}else{
-		week_char = ["日","月","火","水","木","金","土"];
 	}
 	return week_char[num];;
 }
@@ -384,6 +397,7 @@ function speed_src(speed){
 	}
 }
 function yomiage_api(num){
+	//読み上げテキスト最終加工&読み上げ関数呼び出し
 	if(lang == "en"){
 		lang = "en";
 	}else if(lang == "ja"){
@@ -421,18 +435,19 @@ function playVoice(language, message){
 function map_make(lat,lng,zoom){
 	if(zoom == undefined) zoom = 13;
 	map = new google.maps.Map(document.getElementById("map"),{
-		zoom : zoom,									//地図の拡大
-		center : defaultPosition,					//中央の設定
-		mapTypeId : google.maps.MapTypeId.ROADMAP	//地図の種類
+		//地図の拡大率の指定
+		zoom : zoom,
+
+		center : defaultPosition,
+		mapTypeId : google.maps.MapTypeId.ROADMAP
 	});
 	maker = new google.maps.Marker({
-		position: defaultPosition,					//markerの設定
+		position: defaultPosition,
 		map: map
 	});
 }
 function hiduke_click(hiduke){
 	if(!yomiage_flag){
-		//audio.pause();
 		document.getElementById("d"+hiduke+"-dt").style.backgroundColor = "#3DAC00";
 		yomiage_api(yomiage_text_hairetu[hiduke]);
 	}
@@ -561,15 +576,14 @@ function secound_audio_play(){
 		}
 	}
 }
-function encode64(buffer) {
-	var binary = '';
-	var bytes = new Uint8Array( buffer );
-	var len = bytes.byteLength;
-	for (var i = 0; i < len; i++) {
-		binary += String.fromCharCode( bytes[ i ] );
-	}
-	return window.btoa( binary );
+function jump_to_manually_setting(){
+	var zoom = map.getZoom();
+	var latlng = map.getCenter();
+	var lat = latlng.lat();
+	var lng = latlng.lng();
+	location.href = "./manual?lang="+lang+"&lat="+lat+"&lng="+lng+"&zoom="+zoom;
 }
+//ここから先WAVEエンコード関連
 function parseWav(wav) {
 	function readInt(i, bytes) {
 		var ret = 0,shft = 0;
@@ -598,10 +612,12 @@ function Uint8ArrayToFloat32Array(u8a){
 	}
 	return f32Buffer;
 }
-function jump_to_manually_setting(){
-	var zoom = map.getZoom();
-	var latlng = map.getCenter();
-	var lat = latlng.lat();
-	var lng = latlng.lng();
-	location.href = "./manual?lang="+lang+"&lat="+lat+"&lng="+lng+"&zoom="+zoom;
+function encode64(buffer) {
+	var binary = '';
+	var bytes = new Uint8Array( buffer );
+	var len = bytes.byteLength;
+	for (var i = 0; i < len; i++) {
+		binary += String.fromCharCode( bytes[ i ] );
+	}
+	return window.btoa( binary );
 }
